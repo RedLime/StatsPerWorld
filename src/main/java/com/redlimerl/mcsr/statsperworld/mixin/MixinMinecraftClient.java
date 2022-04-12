@@ -1,6 +1,5 @@
 package com.redlimerl.mcsr.statsperworld.mixin;
 
-import com.redlimerl.mcsr.statsperworld.StatsPerWorld;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.world.ClientWorld;
@@ -23,7 +22,7 @@ public class MixinMinecraftClient {
     @Final @Shadow public File runDirectory;
 
     @Shadow public StatHandler field_3763;
-    public static StatHandler STATS_PER_WORLD_STAT_HANDLER = null;
+    private static StatHandler STATS_PER_WORLD_STAT_HANDLER = null;
 
     @Inject(method = "initializeGame", at = @At("TAIL"))
     public void onInit(CallbackInfo ci) {
