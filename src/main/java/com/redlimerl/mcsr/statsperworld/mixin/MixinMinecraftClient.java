@@ -1,6 +1,5 @@
 package com.redlimerl.mcsr.statsperworld.mixin;
 
-import com.redlimerl.mcsr.statsperworld.StatsPerWorld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.world.ClientWorld;
@@ -22,13 +21,13 @@ public class MixinMinecraftClient {
     @Shadow public File runDirectory;
 
     @Shadow public StatHandler statHandler;
+    private static StatHandler STATS_PER_WORLD_STAT_HANDLER = null;
 
     @Inject(method = "initializeGame", at = @At("TAIL"))
     public void onInit(CallbackInfo ci) {
-        StatsPerWorld.STAT_HANDLER = this.statHandler;
+        STATS_PER_WORLD_STAT_HANDLER = this.statHandler;
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Inject(method = "method_2935",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;connect(Lnet/minecraft/client/world/ClientWorld;)V", shift = At.Shift.AFTER))
     public void onStartedServer(String string, String string2, LevelInfo levelInfo, CallbackInfo ci) {
@@ -39,9 +38,9 @@ public class MixinMinecraftClient {
 
     @Inject(method = "connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V", at = @At("HEAD"))
     public void onConnect(ClientWorld world, String loadingMessage, CallbackInfo ci) {
-        if (world == null && this.statHandler != StatsPerWorld.STAT_HANDLER) {
+        if (world == null && this.statHandler != STATS_PER_WORLD_STAT_HANDLER) {
             this.statHandler.method_1739();
-            this.statHandler = StatsPerWorld.STAT_HANDLER;
+            this.statHandler = STATS_PER_WORLD_STAT_HANDLER;
         }
     }
 }
