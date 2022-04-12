@@ -23,26 +23,26 @@ public class MixinMinecraftClient {
     @Final @Shadow public File runDirectory;
 
     @Shadow public StatHandler field_3763;
+    public static StatHandler STATS_PER_WORLD_STAT_HANDLER = null;
 
     @Inject(method = "initializeGame", at = @At("TAIL"))
     public void onInit(CallbackInfo ci) {
-        StatsPerWorld.STAT_HANDLER = this.field_3763;
+        STATS_PER_WORLD_STAT_HANDLER = this.field_3763;
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Inject(method = "method_2935",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;connect(Lnet/minecraft/client/world/ClientWorld;)V", shift = At.Shift.AFTER))
     public void onStartedServer(String string, String string2, LevelInfo levelInfo, CallbackInfo ci) {
         File stats = this.runDirectory.toPath().resolve("saves").resolve(string).toFile();
-        if (!stats.exists()) stats.mkdirs();
+        stats.mkdirs();
         this.field_3763 = new StatHandler(this.session, stats);
     }
 
     @Inject(method = "connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V", at = @At("HEAD"))
     public void onConnect(ClientWorld world, String loadingMessage, CallbackInfo ci) {
-        if (world == null && this.field_3763 != StatsPerWorld.STAT_HANDLER) {
+        if (world == null && this.field_3763 != STATS_PER_WORLD_STAT_HANDLER) {
             this.field_3763.method_1739();
-            this.field_3763 = StatsPerWorld.STAT_HANDLER;
+            this.field_3763 = STATS_PER_WORLD_STAT_HANDLER;
         }
     }
 }

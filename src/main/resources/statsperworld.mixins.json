@@ -3,8 +3,6 @@
   "minVersion": "0.8",
   "package": "com.redlimerl.mcsr.statsperworld.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
-  ],
   "client": [
     "MixinMinecraftClient"
   ],
