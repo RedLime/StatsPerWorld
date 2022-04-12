@@ -40,7 +40,7 @@ public class MixinMinecraftClient {
 
     @Inject(method = "connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V", at = @At("HEAD"))
     public void onConnect(ClientWorld world, String loadingMessage, CallbackInfo ci) {
-        if (world == null && this.field_3763 != StatsPerWorld.STAT_HANDLER) {
+        if (world == null && this.field_3763 != STATS_PER_WORLD_STAT_HANDLER) {
             this.field_3763.method_1739();
             this.field_3763 = STATS_PER_WORLD_STAT_HANDLER;
         }
